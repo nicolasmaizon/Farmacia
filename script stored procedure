@@ -1,0 +1,39 @@
+-- CREACION DE STORED PROCEDURE--
+-- ordenar productos --
+DELIMITER //
+
+create procedure ordenar_productos (in campo varchar (150) , in tipo_ordenamiento enum ('asc' , 'desc'), in tabla varchar (150))
+begin
+
+	if campo <> '' then
+		set @ordernar = concat(' order by ',campo);
+    else
+		set @ordenar ='';
+    end if;
+    if tipo_ordenamiento <> '' then
+		set @tipo = concat(' ',tipo_ordenamiento);
+    else
+		set @tipo = '';
+    end if;
+    set @clausula = concat( 'select * from ', tabla,@ordenar,@tipo );
+    prepare ejecutarsql from @clausula;
+    execute ejecutarsql;
+    deallocate prepare ejecutarsql;
+ end;
+ 
+ //
+ 
+-- insercion de registro-- 
+DELIMITER //
+create procedure check_duplicado_clientes(IN nombre varchar(100))
+begin 
+if (select count(*) from clientes where clientes.nombre= nombre)>0 then 
+	   select 0;
+else 
+	begin
+	insert into clientes (nombre ,apellido , dni, telefono, direccion )
+		values ('rogelio', 'gonzales', 5678906,'4785643','67 y 20');
+	  end;
+end if;
+end;
+//
