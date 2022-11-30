@@ -1,0 +1,100 @@
+-- TRIGGERS--
+-- creacion de una tabla backup de clientes--
+
+CREATE TABLE IF NOT EXISTS clientes_backup(
+idcliente int not null primary key auto_increment,
+nombre varchar (700) not null,
+apellido varchar (7000) not null,
+dni int not null,
+telefono varchar (800) not null,
+direccion varchar (1000));
+
+-- creo el trigger en el que al agregar un nuevo cliente se va a guardar en la tabla backup--
+
+create trigger insertar_data 
+after insert on clientes 
+for each row 
+INSERT INTO clientes_backup (`idcliente`,`nombre`,`apellido`,`dni`,`telefono`,`direccion`) VALUES (new.idcliente,new.nombre,new.apellido,new.dni,new.telefono,new.direccion);
+
+-- inserto el nuevo cliente--
+INSERT INTO clientes (`idcliente`,`nombre`,`apellido`,`dni`,`telefono`,`direccion`) VALUES ('16','venzo','skyline',898989,345678,'139 y 42');
+
+-- corroboro el nuevo cliente en la tabla backup--
+select * from clientes_backup
+
+-- creo una tabla bitacora para que me guarde datos de la insercion de registro--
+create table if not exists bitacora (
+id_bitacora int not null primary key auto_increment,
+fecha date not null,
+hora time not null,
+usuario_id varchar(45),
+idcliente int,
+nombre varchar (700) not null,
+apellido varchar (7000) not null,
+dni int not null,
+telefono varchar (800) not null,
+direccion varchar (1000) );
+
+-- creo el trigger de insercion--
+create trigger insertar_log 
+after insert on clientes
+for each row
+insert into bitacora (fecha,hora,usuario_id,idcliente,nombre,apellido,dni,telefono,direccion)
+values
+(now(),now(),session_user(),new.idcliente,new.nombre,new.apellido,new.dni,new.telefono,new.direccion);
+
+-- inserto un nuevo registro--
+INSERT INTO clientes (`idcliente`,`nombre`,`apellido`,`dni`,`telefono`,`direccion`) VALUES (17,'raleigh','raptor',4512269,111608999,'17 y 520')
+
+-- corroboro la tabla bitacora con sus fechas y usuarios--
+select * from bitacora 
+
+-- creo una tabla que me guarde la actualizacion de los nombres de los clientes--
+create table if not exists update_cliente (
+fecha date not null,
+hora time not null,
+usuario_id varchar(45),
+idcliente int,
+new_nombre varchar (700) not null,
+old_nombre varchar (700) not null);
+
+-- creo el trigger que me guarde los datos de esa actualizaion--
+create trigger update_log
+after update on clientes
+for each row
+insert into update_cliente (fecha,hora,usuario_id,idcliente,new_nombre,old_nombre)
+values
+(now(),now(),session_user(),old.idcliente,new.nombre,old.nombre);
+
+-- hago una actualizacion de nombre--
+update clientes set nombre='thiago' where idcliente=13
+
+-- corroboro los datos de la nueva actualizacion--
+select * from update_cliente
+
+-- realizo un delete y quien lo hizo--
+CREATE TABLE IF NOT EXISTS borrado_clientes(
+fecha date not null,
+hora time not null,
+usuario_id varchar(45),
+idcliente int not null primary key auto_increment,
+nombre varchar (700) not null,
+apellido varchar (7000) not null,
+dni int not null,
+telefono varchar (800) not null,
+direccion varchar (1000));
+
+-- creo el trigger--
+create trigger delete_log
+before delete on clientes
+for each row
+insert into borrado_clientes
+(fecha,hora,usuario_id,idcliente,nombre,apellido,dni,telefono,direccion)
+values
+(now(),now(),session_user(),idcliente,nombre,apellido,dni,telefono,direccion);
+
+-- hago un delete--
+delete from clientes where idcliente=17
+
+-- corroboro datos del delete--
+select * from borrado_clientes
