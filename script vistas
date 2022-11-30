@@ -1,0 +1,26 @@
+-- CREACION TABLAS VISTAS--
+
+create view vw_producto_mas_caro as
+select *  from productos
+order by precio desc
+limit 1;
+
+create view vw_laboratorio_mas_productos as
+select l.nombre, count(p.idproducto) as cantidad from laboratorios as l 
+inner join productos as p on p.idlaboratorio = l.idlaboratorio
+group by l.idlaboratorio
+order by cantidad desc;
+
+create view vw_ultimas_compras as
+select * from compras
+where fecha between "2022-10-01" AND "2022-11-01";
+
+create view vw_cliente_mas_pedidos as
+select l.nombre, sum(p.idpedidos) as cantidad from clientes as l
+inner join pedidos as p on p.idcliente = l.idcliente
+group by l.idcliente
+order by cantidad desc;
+
+create view vw_ordenar_dni as
+select nombre, dni from clientes 
+order by dni asc;
