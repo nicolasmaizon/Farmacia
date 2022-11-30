@@ -1,0 +1,24 @@
+-- CREACION DE FUNCIONES--
+
+delimiter //
+create function suma_total_precio ( dato int) returns float
+deterministic
+begin
+	declare resultado int;
+    set resultado = (select sum(Precio) + dato FROM Productos);
+    return resultado;
+    end;
+    
+//
+
+delimiter // 
+
+create function ver_nombre_laboratorio (id int) returns varchar (30)
+deterministic
+begin
+	declare nombre_laboratorio varchar (30);
+    set nombre_laboratorio = (select nombre from proyecto_farmacia.laboratorios where idlaboratorio= id);
+    return nombre_laboratorio;
+    end;
+    //
+    
