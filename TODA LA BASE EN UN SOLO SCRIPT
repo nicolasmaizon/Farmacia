@@ -1,0 +1,385 @@
+-- CREACION DE LA BASE DE DATOS--
+
+CREATE database PROYECTO_FARMACIA;
+
+USE PROYECTO_FARMACIA;
+
+-- CREACION DE LAS ENTIDADES--
+
+CREATE TABLE IF NOT EXISTS clientes(
+idcliente int not null primary key auto_increment,
+nombre varchar (700) not null,
+apellido varchar (7000) not null,
+dni int not null,
+telefono varchar (800) not null,
+direccion varchar (1000) );
+
+CREATE TABLE IF NOT EXISTS laboratorios(
+idlaboratorio int not null primary key auto_increment,
+nombre text (70) not null,
+telefono int not null,
+direccion varchar (100) );
+
+CREATE TABLE IF NOT EXISTS medios_de_pagos(
+idpago int not null primary key auto_increment,
+descripcion varchar (70) not null);
+
+CREATE TABLE IF NOT EXISTS droguerias(
+iddrogueria int not null primary key auto_increment,
+nombre text (70) not null,
+telefono int not null,
+direccion varchar (100), 
+idlaboratorio int,
+foreign key (idlaboratorio) references laboratorios (idlaboratorio) );
+
+CREATE TABLE IF NOT EXISTS productos(
+idproducto int not null primary key auto_increment,
+nombre varchar (100) not null,
+cantidad int not null,
+precio float not null,
+idlaboratorio int,
+iddrogueria int,
+foreign key (idlaboratorio) references laboratorios (idlaboratorio),
+foreign key (iddrogueria) references droguerias (iddrogueria) );
+
+CREATE TABLE IF NOT EXISTS pedidos(
+idpedidos int not null primary key auto_increment,
+cantidad int not null, 
+idcliente int,
+idproducto int,
+foreign key (idcliente) references clientes (idcliente),
+foreign key (idproducto) references productos (idproducto) );
+
+CREATE TABLE IF NOT EXISTS compras(
+idcompra int not null primary key auto_increment,
+fecha datetime not null,
+idpedidos int,
+idpago int,
+foreign key (idpedidos) references pedidos (idpedidos),
+foreign key (idpago) references medios_de_pagos (idpago) );
+
+INSERT INTO clientes (`idcliente`,`nombre`,`apellido`,`dni`,`telefono`,`direccion`) VALUES (1,'matias','grecco',35612269,221608999,'174 y 520');
+INSERT INTO clientes (`idcliente`,`nombre`,`apellido`,`dni`,`telefono`,`direccion`) VALUES (2,'hernan','allekote',35615890,2215056696,'23 y 34');
+INSERT INTO clientes(`idcliente`,`nombre`,`apellido`,`dni`,`telefono`,`direccion`) VALUES (3,'ariel','cabral',23456345,2215679876,'7 y 50');
+INSERT INTO clientes(`idcliente`,`nombre`,`apellido`,`dni`,`telefono`,`direccion`) VALUES (4,'silvia','cardoso',32666898,2216986456,'1 y 60');
+INSERT INTO clientes(`idcliente`,`nombre`,`apellido`,`dni`,`telefono`,`direccion`) VALUES (5,'belen','sanchez',34789554,2216067534,'25 y 38');
+INSERT INTO clientes(`idcliente`,`nombre`,`apellido`,`dni`,`telefono`,`direccion`) VALUES (6,'emilio','martinez',40789654,221876123,'6 y 41');
+INSERT INTO clientes(`idcliente`,`nombre`,`apellido`,`dni`,`telefono`,`direccion`) VALUES (7,'mariano','segretin',34876546,221765432,'122 y 50');
+INSERT INTO clientes(`idcliente`,`nombre`,`apellido`,`dni`,`telefono`,`direccion`) VALUES (8,'alan','samudio',41908345,221123456,'13 y 41');
+INSERT INTO clientes(`idcliente`,`nombre`,`apellido`,`dni`,`telefono`,`direccion`) VALUES (9,'josefina','paterno',44234678,221098765,'8 y 61');
+INSERT INTO clientes(`idcliente`,`nombre`,`apellido`,`dni`,`telefono`,`direccion`) VALUES (10,'luciana','anania',41567456,221678876,'16 y 45');
+INSERT INTO clientes(`idcliente`,`nombre`,`apellido`,`dni`,`telefono`,`direccion`) VALUES (11,'julieta','otonelo',38278634,221890765,'26 y 505');
+INSERT INTO clientes(`idcliente`,`nombre`,`apellido`,`dni`,`telefono`,`direccion`) VALUES (12,'pablo','marquez',35678905,221546843,'3 y 38');
+INSERT INTO clientes(`idcliente`,`nombre`,`apellido`,`dni`,`telefono`,`direccion`) VALUES (13,'gonzalo','leonardi',6537842,221567345,'116 y 38');
+INSERT INTO clientes(`idcliente`,`nombre`,`apellido`,`dni`,`telefono`,`direccion`) VALUES (14,'maximiliano','antonelli',11359567,221906789,'522 y 141');
+INSERT INTO clientes(`idcliente`,`nombre`,`apellido`,`dni`,`telefono`,`direccion`) VALUES (15,'lautaro','ortega',3589567,2215056698,'9 y 32');
+
+INSERT INTO laboratorios (`idlaboratorio`,`nombre`,`telefono`,`direccion`) VALUES (1,'bago',11456789,'avenida antartida');
+INSERT INTO laboratorios (`idlaboratorio`,`nombre`,`telefono`,`direccion`) VALUES (2,'roemmers',11789456,'71 y 8');
+INSERT INTO laboratorios (`idlaboratorio`,`nombre`,`telefono`,`direccion`) VALUES (3,'casasco',22156789,'mitre y sarmiento');
+INSERT INTO laboratorios (`idlaboratorio`,`nombre`,`telefono`,`direccion`) VALUES (4,'phizer',11356798,'callao y martinez');
+INSERT INTO laboratorios (`idlaboratorio`,`nombre`,`telefono`,`direccion`) VALUES (5,'baliarda',11567843,'45 y 6');
+INSERT INTO laboratorios (`idlaboratorio`,`nombre`,`telefono`,`direccion`) VALUES (6,'bayer',11678903,'45 y 8');
+INSERT INTO laboratorios (`idlaboratorio`,`nombre`,`telefono`,`direccion`) VALUES (7,'bernabo',4781642,'44 y 146');
+INSERT INTO laboratorios (`idlaboratorio`,`nombre`,`telefono`,`direccion`) VALUES (8,'microsules',4718081,'49 y 6');
+INSERT INTO laboratorios (`idlaboratorio`,`nombre`,`telefono`,`direccion`) VALUES (9,'lepetit',4781180,'121 y 6');
+INSERT INTO laboratorios (`idlaboratorio`,`nombre`,`telefono`,`direccion`) VALUES (10,'duncan',11564728,'70 y 6');
+INSERT INTO laboratorios (`idlaboratorio`,`nombre`,`telefono`,`direccion`) VALUES (11,'biotenk',11987654,'45 y 10');
+INSERT INTO laboratorios (`idlaboratorio`,`nombre`,`telefono`,`direccion`) VALUES (12,'craveri',46578903,'irigoyen y 6');
+INSERT INTO laboratorios (`idlaboratorio`,`nombre`,`telefono`,`direccion`) VALUES (13,'teva',4508976,'11 y 511');
+INSERT INTO laboratorios (`idlaboratorio`,`nombre`,`telefono`,`direccion`) VALUES (14,'abbot',47896543,'7 y 536');
+INSERT INTO laboratorios (`idlaboratorio`,`nombre`,`telefono`,`direccion`) VALUES (15,'savant',115452543,'4 y 56');
+
+
+INSERT INTO medios_de_pagos (`idpago`,`descripcion`) VALUES (1,'efectivo');
+INSERT INTO medios_de_pagos (`idpago`,`descripcion`) VALUES (2,'debito');
+INSERT INTO medios_de_pagos (`idpago`,`descripcion`) VALUES (3,'credito');
+
+INSERT INTO droguerias(`iddrogueria`,`nombre`,`telefono`,`direccion`,`idlaboratorio`) VALUES (1,'suizo',4781642,'4 y diagonal 80',1);
+INSERT INTO droguerias(`iddrogueria`,`nombre`,`telefono`,`direccion`,`idlaboratorio`) VALUES (2,'disval',4811171,'63 y 12',5);
+INSERT INTO droguerias(`iddrogueria`,`nombre`,`telefono`,`direccion`,`idlaboratorio`) VALUES (3,'monroe americana',4235467,'cantilo y guemes',3);
+INSERT INTO droguerias(`iddrogueria`,`nombre`,`telefono`,`direccion`,`idlaboratorio`) VALUES (4,'cofaloza',4781680,'8 y 50',2);
+INSERT INTO droguerias(`iddrogueria`,`nombre`,`telefono`,`direccion`,`idlaboratorio`) VALUES (5,'sumed',4567890,'520 y 137',4);
+
+INSERT INTO productos (`idproducto`,`nombre`,`cantidad`,`precio`,`idlaboratorio`,`iddrogueria`) VALUES (1,'tafirol',1,250,3,5);
+INSERT INTO productos (`idproducto`,`nombre`,`cantidad`,`precio`,`idlaboratorio`,`iddrogueria`) VALUES (2,'bayaspirina',1,150,5,4);
+INSERT INTO productos (`idproducto`,`nombre`,`cantidad`,`precio`,`idlaboratorio`,`iddrogueria`) VALUES (3,'ibupirac',1,350,4,3);
+INSERT INTO productos (`idproducto`,`nombre`,`cantidad`,`precio`,`idlaboratorio`,`iddrogueria`) VALUES (4,'diclofenac',1,500,1,2);
+INSERT INTO productos (`idproducto`,`nombre`,`cantidad`,`precio`,`idlaboratorio`,`iddrogueria`) VALUES (5,'lotrial',1,400,2,1);
+INSERT INTO productos (`idproducto`,`nombre`,`cantidad`,`precio`,`idlaboratorio`,`iddrogueria`) VALUES (6,'losacor',1,800,2,4);
+INSERT INTO productos (`idproducto`,`nombre`,`cantidad`,`precio`,`idlaboratorio`,`iddrogueria`) VALUES (7,'ampliar',1,1800,13,4);
+INSERT INTO productos (`idproducto`,`nombre`,`cantidad`,`precio`,`idlaboratorio`,`iddrogueria`) VALUES (8,'amoxidal',1,700,2,4);
+INSERT INTO productos (`idproducto`,`nombre`,`cantidad`,`precio`,`idlaboratorio`,`iddrogueria`) VALUES (9,'fabamox duo',1,1400,10,4);
+INSERT INTO productos (`idproducto`,`nombre`,`cantidad`,`precio`,`idlaboratorio`,`iddrogueria`) VALUES (10,'valpex',1,2800,11,4);
+INSERT INTO productos (`idproducto`,`nombre`,`cantidad`,`precio`,`idlaboratorio`,`iddrogueria`) VALUES (11,'sintrom',1,890,9,4);
+INSERT INTO productos (`idproducto`,`nombre`,`cantidad`,`precio`,`idlaboratorio`,`iddrogueria`) VALUES (12,'sertal',1,750,7,4);
+INSERT INTO productos (`idproducto`,`nombre`,`cantidad`,`precio`,`idlaboratorio`,`iddrogueria`) VALUES (13,'hepatalgina',1,457,7,4);
+INSERT INTO productos (`idproducto`,`nombre`,`cantidad`,`precio`,`idlaboratorio`,`iddrogueria`) VALUES (14,'buscapina',1,800,6,4);
+INSERT INTO productos (`idproducto`,`nombre`,`cantidad`,`precio`,`idlaboratorio`,`iddrogueria`) VALUES (15,'quraplus',1,500,15,4);
+
+INSERT INTO pedidos (`idpedidos`,`cantidad`,`idcliente`,`idproducto`) VALUES (1,2,5,6);
+INSERT INTO pedidos (`idpedidos`,`cantidad`,`idcliente`,`idproducto`) VALUES (2,2,2,5);
+INSERT INTO pedidos (`idpedidos`,`cantidad`,`idcliente`,`idproducto`) VALUES (3,3,3,4);
+INSERT INTO pedidos (`idpedidos`,`cantidad`,`idcliente`,`idproducto`) VALUES (4,1,4,3);
+INSERT INTO pedidos (`idpedidos`,`cantidad`,`idcliente`,`idproducto`) VALUES (5,5,1,2);
+INSERT INTO pedidos (`idpedidos`,`cantidad`,`idcliente`,`idproducto`) VALUES (6,6,6,1);
+
+INSERT INTO compras (`idcompra`,`fecha`,`idpedidos`,`idpago`) VALUES (1,"2022-10-23 12:09:23",5,2);
+INSERT INTO compras (`idcompra`,`fecha`,`idpedidos`,`idpago`) VALUES (2,"2022-10-02 11:10:23",3,2);
+INSERT INTO compras (`idcompra`,`fecha`,`idpedidos`,`idpago`) VALUES (3,"2022-07-23 12:00:23",1,1);
+INSERT INTO compras (`idcompra`,`fecha`,`idpedidos`,`idpago`) VALUES (4,"2022-08-15 08:09:23",4,3);
+INSERT INTO compras (`idcompra`,`fecha`,`idpedidos`,`idpago`) VALUES (5,"2022-06-23 10:09:23",6,3);
+INSERT INTO compras (`idcompra`,`fecha`,`idpedidos`,`idpago`) VALUES (6,"2022-05-15 12:00:23",2,1);
+
+
+
+
+-- CREACION TABLAS VISTAS--
+
+create view vw_producto_mas_caro as
+select *  from productos
+order by precio desc
+limit 1;
+
+create view vw_laboratorio_mas_productos as
+select l.nombre, count(p.idproducto) as cantidad from laboratorios as l 
+inner join productos as p on p.idlaboratorio = l.idlaboratorio
+group by l.idlaboratorio
+order by cantidad desc;
+
+create view vw_ultimas_compras as
+select * from compras
+where fecha between "2022-10-01" AND "2022-11-01";
+
+create view vw_cliente_mas_pedidos as
+select l.nombre, sum(p.idpedidos) as cantidad from clientes as l
+inner join pedidos as p on p.idcliente = l.idcliente
+group by l.idcliente
+order by cantidad desc;
+
+create view vw_ordenar_dni as
+select nombre, dni from clientes 
+order by dni asc;
+
+
+
+
+
+
+-- CREACION DE FUNCIONES--
+
+delimiter //
+create function suma_total_precio ( dato int) returns float
+deterministic
+begin
+	declare resultado int;
+    set resultado = (select sum(Precio) + dato FROM Productos);
+    return resultado;
+    end;
+    
+//
+
+delimiter // 
+
+create function ver_nombre_laboratorio (id int) returns varchar (30)
+deterministic
+begin
+	declare nombre_laboratorio varchar (30);
+    set nombre_laboratorio = (select nombre from proyecto_farmacia.laboratorios where idlaboratorio= id);
+    return nombre_laboratorio;
+    end;
+    //
+    
+
+
+
+
+-- CREACION DE STORED PROCEDURE--
+-- ordenar productos --
+DELIMITER //
+
+create procedure ordenar_productos (in campo varchar (150) , in tipo_ordenamiento enum ('asc' , 'desc'), in tabla varchar (150))
+begin
+
+	if campo <> '' then
+		set @ordernar = concat(' order by ',campo);
+    else
+		set @ordenar ='';
+    end if;
+    if tipo_ordenamiento <> '' then
+		set @tipo = concat(' ',tipo_ordenamiento);
+    else
+		set @tipo = '';
+    end if;
+    set @clausula = concat( 'select * from ', tabla,@ordenar,@tipo );
+    prepare ejecutarsql from @clausula;
+    execute ejecutarsql;
+    deallocate prepare ejecutarsql;
+ end;
+ 
+ //
+ 
+-- insercion de registro-- 
+DELIMITER //
+create procedure check_duplicado_clientes(IN nombre varchar(100))
+begin 
+if (select count(*) from clientes where clientes.nombre= nombre)>0 then 
+	   select 0;
+else 
+	begin
+	insert into clientes (nombre ,apellido , dni, telefono, direccion )
+		values ('rogelio', 'gonzales', 5678906,'4785643','67 y 20');
+	  end;
+end if;
+end;
+//
+
+
+
+
+
+-- TRIGGERS--
+-- creacion de una tabla backup de clientes--
+
+CREATE TABLE IF NOT EXISTS clientes_backup(
+idcliente int not null primary key auto_increment,
+nombre varchar (700) not null,
+apellido varchar (7000) not null,
+dni int not null,
+telefono varchar (800) not null,
+direccion varchar (1000));
+
+-- creo el trigger en el que al agregar un nuevo cliente se va a guardar en la tabla backup--
+
+create trigger insertar_data 
+after insert on clientes 
+for each row 
+INSERT INTO clientes_backup (`idcliente`,`nombre`,`apellido`,`dni`,`telefono`,`direccion`) VALUES (new.idcliente,new.nombre,new.apellido,new.dni,new.telefono,new.direccion);
+
+-- inserto el nuevo cliente--
+INSERT INTO clientes (`idcliente`,`nombre`,`apellido`,`dni`,`telefono`,`direccion`) VALUES ('16','venzo','skyline',898989,345678,'139 y 42');
+
+-- corroboro el nuevo cliente en la tabla backup--
+select * from clientes_backup
+
+-- creo una tabla bitacora para que me guarde datos de la insercion de registro--
+create table if not exists bitacora (
+id_bitacora int not null primary key auto_increment,
+fecha date not null,
+hora time not null,
+usuario_id varchar(45),
+idcliente int,
+nombre varchar (700) not null,
+apellido varchar (7000) not null,
+dni int not null,
+telefono varchar (800) not null,
+direccion varchar (1000) );
+
+-- creo el trigger de insercion--
+create trigger insertar_log 
+after insert on clientes
+for each row
+insert into bitacora (fecha,hora,usuario_id,idcliente,nombre,apellido,dni,telefono,direccion)
+values
+(now(),now(),session_user(),new.idcliente,new.nombre,new.apellido,new.dni,new.telefono,new.direccion);
+
+-- inserto un nuevo registro--
+INSERT INTO clientes (`idcliente`,`nombre`,`apellido`,`dni`,`telefono`,`direccion`) VALUES (17,'raleigh','raptor',4512269,111608999,'17 y 520')
+
+-- corroboro la tabla bitacora con sus fechas y usuarios--
+select * from bitacora 
+
+-- creo una tabla que me guarde la actualizacion de los nombres de los clientes--
+create table if not exists update_cliente (
+fecha date not null,
+hora time not null,
+usuario_id varchar(45),
+idcliente int,
+new_nombre varchar (700) not null,
+old_nombre varchar (700) not null);
+
+-- creo el trigger que me guarde los datos de esa actualizaion--
+create trigger update_log
+after update on clientes
+for each row
+insert into update_cliente (fecha,hora,usuario_id,idcliente,new_nombre,old_nombre)
+values
+(now(),now(),session_user(),old.idcliente,new.nombre,old.nombre);
+
+-- hago una actualizacion de nombre--
+update clientes set nombre='thiago' where idcliente=13
+
+-- corroboro los datos de la nueva actualizacion--
+select * from update_cliente
+
+-- realizo un delete y quien lo hizo--
+CREATE TABLE IF NOT EXISTS borrado_clientes(
+fecha date not null,
+hora time not null,
+usuario_id varchar(45),
+idcliente int not null primary key auto_increment,
+nombre varchar (700) not null,
+apellido varchar (7000) not null,
+dni int not null,
+telefono varchar (800) not null,
+direccion varchar (1000));
+
+-- creo el trigger--
+create trigger delete_log
+before delete on clientes
+for each row
+insert into borrado_clientes
+(fecha,hora,usuario_id,idcliente,nombre,apellido,dni,telefono,direccion)
+values
+(now(),now(),session_user(),idcliente,nombre,apellido,dni,telefono,direccion);
+
+-- hago un delete--
+delete from clientes where idcliente=17
+
+-- corroboro datos del delete--
+select * from borrado_clientes
+
+
+
+-- IMPLEMENTACION DE SENTENCIAS--
+-- creo usuario1 el cual solo tendra permisos de lecturas sobre todas las tablas de la bbdd--
+create user 'usuario1'@'localhost' identified by '1234';
+grant select on * to 'usuario1'@'localhost';
+
+-- creo usuario2 que tendra permisos de lectura, insercion, y modificacion de datos sobre todas las tablas de la bbdd--
+create user 'usuario2'@'localhost' identified by 'coderhouse';
+grant select, insert, update on * to 'usuario2'@'localhost';
+
+
+
+-- SENTENCIAS DEL SUBLENGUAJE TCL--
+
+SET SQL_SAFE_UPDATES=0;
+set autocommit=0;
+
+select * from clientes;
+
+start transaction;
+delete from clientes where nombre='raleigh';
+delete from clientes where nombre='venzo';
+/* Para volver al estado original */
+rollback;
+
+/* para confirmar la operación de borrado*/
+commit;
+
+
+start transaction;
+INSERT INTO productos (`idproducto`,`nombre`,`cantidad`,`precio`,`idlaboratorio`,`iddrogueria`) VALUES (17,'ceporexin duo',1,890,14,3);
+INSERT INTO productos (`idproducto`,`nombre`,`cantidad`,`precio`,`idlaboratorio`,`iddrogueria`) VALUES (18,'diurex',1,1655,1,4);
+INSERT INTO productos (`idproducto`,`nombre`,`cantidad`,`precio`,`idlaboratorio`,`iddrogueria`) VALUES (19,'decadron',1,2017,13,3);
+INSERT INTO productos (`idproducto`,`nombre`,`cantidad`,`precio`,`idlaboratorio`,`iddrogueria`) VALUES (20,'aerotina',1,540,8,2);
+savepoint productos17al20;
+INSERT INTO productos (`idproducto`,`nombre`,`cantidad`,`precio`,`idlaboratorio`,`iddrogueria`) VALUES (21,'ventolin',1,2200,12,1);
+INSERT INTO productos (`idproducto`,`nombre`,`cantidad`,`precio`,`idlaboratorio`,`iddrogueria`) VALUES (22,'uvasal',1,90,15,4);
+INSERT INTO productos (`idproducto`,`nombre`,`cantidad`,`precio`,`idlaboratorio`,`iddrogueria`) VALUES (23,'next',1,810,11,4);
+INSERT INTO productos (`idproducto`,`nombre`,`cantidad`,`precio`,`idlaboratorio`,`iddrogueria`) VALUES (24,'alikal',1,80,15,4);
+savepoint productos21al24;
+
+/* Este comando desactiva el savepoint productos17al20*/
+release savepoint productos17al20;
